@@ -44,8 +44,28 @@ class PostScreen extends StatelessWidget {
         return Text('Error: ${postValue.error}'); // display a error
 
       case AsyncValueState.success:
-        return PostCard(post: postValue.data!); // display the post
+      final posts = postValue.data!;
+        if (posts.isEmpty) {
+          return Text('No posts for now');
+        }
+        return PostsList(posts: posts); // display the post
     }
+  }
+}
+
+class PostsList extends StatelessWidget {
+  const PostsList({super.key, required this.posts});
+
+  final List<Post> posts;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        return PostCard(post: posts[index]);
+      },
+    );
   }
 }
 
